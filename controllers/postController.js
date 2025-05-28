@@ -5,11 +5,12 @@ const index = (req, res) => {
 
     connection.query(sql, (err, results) => {
         if (err) {
-            return res.status(500).json({ error: "Database query failed" });
+            return res.status(500).json({ error: "Database query failed" + err });
         }
+        // console.log(results);
+        res.json(results);
     })
 
-    res.send("Elenco post");
 };
 
 const show = (req, res) => {
