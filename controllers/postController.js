@@ -14,10 +14,32 @@ const index = (req, res) => {
 };
 
 const show = (req, res) => {
-    res.send("Post con id " + req.params.id);
+    const id = req.params.id;
+
+    const sql = "SELECT * FROM posts WHERE id = " + id;
+
+    connection.query(sql, (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: "Database query failed :" + err });
+        }
+        res.json(results);
+    })
+
+    // res.send("Post con id " + req.params.id);
 };
+
+const destroy = (req, res) => {
+    const id = req.params.id;
+
+    connection.query("DELETE FROM posts WHERE id = ?", [id], (err) => {
+        if (err) return res.status(500).json({ error: "Database query failed : " + err });
+
+        res.sendStatus(204);
+    })
+}
 
 module.exports = {
     index,
-    show
+    show,
+    destroy
 }
